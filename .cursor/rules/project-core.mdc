@@ -1,0 +1,131 @@
+---
+description: Core gameAI workflow — ExecPlans, reproducibility, Python/git hygiene
+alwaysApply: true
+---
+
+# Project core
+
+This is a small-scale deep learning research repo. Prefer clarity, reproducibility, and incremental progress. Authoritative detail: `AGENTS.md` and `PLANS.md`.
+
+## Plan before coding
+
+- Non-trivial work needs an ExecPlan per `PLANS.md` before implementation (features, model/training/data changes, behavior-changing refactors).
+- Do not start coding until the plan is complete; update the plan when reality diverges.
+- Agents must explain tradeoffs and avoid hidden dependencies or unjustified external calls.
+
+## Reproducibility
+
+- Fix random seeds where applicable; declare dependencies in `pyproject.toml` (no parallel `requirements.txt`).
+- Experiments need a clear config, logged params/results, and runnable committed code.
+
+## Python
+
+- Python 3.10+; type hints where practical; explicit over clever.
+- Format/lint with black, isort, and ruff/flake8; keep lines ~100–120.
+
+## Git and safety
+
+- Keep `main` stable; use `feature/<short-description>`; small focused commits.
+- Never commit secrets, `.env`, private datasets, or large files (~>50MB).
+- Ignore `/data`, `/checkpoints`, `/outputs`, `.env`.
+
+## Tests and notebooks
+
+- Add fast, deterministic tests for utilities, transforms, and model pieces where feasible.
+- Notebooks are exploration only; promote lasting work into scripts.
+
+## Avoid
+
+- Silent model-behavior changes, mixing experimental and production code, hardcoding paths/secrets, monolithic commits, skipping ExecPlans.
+
+
+
+---
+description: Core project architecture and development principles
+alwaysApply: true
+---
+
+# Project Overview
+
+This project develops autonomous agents capable of playing
+classic console video games using deep learning and reinforcement
+learning.
+
+Primary technologies:
+- Python
+- PyTorch
+- Stable-Retro
+- Gymnasium
+- NumPy
+
+The initial development environment is a local Apple Silicon
+Mac using the PyTorch MPS backend where supported.
+
+The long-term objective is to build a reusable pipeline that
+can accept a supported game ROM and train an agent to complete
+the game with minimal human intervention.
+
+# Architecture
+
+Maintain clear separation between:
+
+1. Game/emulator integration
+2. Environment wrappers and preprocessing
+3. Agent/model architectures
+4. RL algorithms and training
+5. Evaluation and benchmarking
+6. Experiment management and checkpointing
+7. Game-solving orchestration
+
+Avoid tightly coupling game-specific logic to the learning
+algorithm.
+
+Prefer small, modular components with explicit interfaces.
+
+# Development Principles
+
+- Prioritize correctness, modularity, readability, and
+  reproducibility over premature optimization.
+- Prefer simple implementations before introducing
+  unnecessary abstractions.
+- Avoid duplicating functionality.
+- Keep configuration separate from implementation.
+- Use type hints for public functions and important interfaces.
+- Add docstrings to nontrivial classes and functions.
+- Handle errors explicitly rather than silently ignoring them.
+- Avoid hardcoded filesystem paths and machine-specific settings.
+
+# Working With the Codebase
+
+Before making significant changes:
+- Inspect the existing architecture and relevant files.
+- Identify affected components and dependencies.
+- Explain the proposed approach when architectural decisions
+  are involved.
+- Preserve existing functionality unless explicitly asked
+  to change it.
+
+Implement changes incrementally.
+
+After implementation:
+- Run relevant tests.
+- Check for regressions.
+- Update documentation when behavior or interfaces change.
+
+Do not introduce large dependencies without explaining
+why they are needed.
+
+Do not overwrite existing checkpoints, datasets, or experiment
+results without explicit permission.
+
+# Autonomous Development
+
+When given a sufficiently defined task:
+- Break it into logical implementation steps.
+- Implement the complete feature rather than only a sketch.
+- Write or update tests.
+- Run the tests and report actual results.
+- Identify any remaining limitations.
+
+Never claim code has been tested unless it has actually
+been executed.
